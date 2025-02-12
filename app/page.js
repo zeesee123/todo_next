@@ -1,13 +1,24 @@
 // import Image from "next/image";
 "use client"
 
-import {useState} from "react";
+import {useState,useEffect} from "react";
 import Link from 'next/link';
 
 export default function Home() {
 
+  // localStorage.setItem('ch','era');
+
   const[item,setitem]=useState("");
-  const[list,setlist]=useState([]);
+  const[list,setlist]=useState(()=>JSON.parse(localStorage.getItem('list'))||[]);
+
+  useEffect(()=>{
+    localStorage.setItem('list',JSON.stringify(list));
+  },[list]);
+
+  // function setstorage(){
+
+  //   localStorage.setItem('list',JSON.stringify(list));
+  // }
 
 
   function Clicker(e,id){
@@ -17,17 +28,38 @@ export default function Home() {
     console.log(e.target.checked);
     console.log(e.check);
 
-    list.forEach((li)=>{
-      // console.log(li);
-      if(li.id==id){
-        li.completed=e.target.checked;
-      }
-    });
+    setlist((prev)=>{return prev.map((p)=>{if(p.id==id){return {...p,completed:e.target.checked};}else{return p}})});
+
+    // list.forEach((li)=>{
+    //   if(li.id==id){
+    //     li.completed=e.target.checked;
+    //   }
+    // });
+
+    // setlist(list);
+
+    // setlist((prev)=>{let newlist=prev.map((li)=>{
+
+    //   if(li.id==id){
+    //     li.completed=e.target.checked;
+    //   }
+    // }); return newlist;});
+
+    // setstorage();
+
+    
   }
 
-  function deletestuff(e){
+  function deletestuff(id){
 
-    console.log(e);
+    // list.filter((li)=>{
+    //   return li.id!=id;
+    // });
+
+    setlist((prev)=>{let newlist=prev.filter((li)=>{return li.id!=id});return newlist;});
+
+    // setstorage();
+    // console.log(e);
   }
 
   function additem(e){
@@ -61,6 +93,7 @@ export default function Home() {
     console.log('this is the list',list);
     // console.log('you just submitted the form');
 
+    // setstorage();
 
 
 
@@ -71,11 +104,11 @@ export default function Home() {
   return (
     <>
 
-<navbar>
+<nav>
   <div className="flex p-2">
     <div className="mx-1"><Link href="/about">About Page</Link></div>
   </div>
-</navbar>
+</nav>
 
 
     <h1 className="italic text-4xl text-center my-5">Todo test</h1>
@@ -108,8 +141,8 @@ export default function Home() {
               {list.map((el,i)=>{return (<li key={i} className="my-3">
                 <div className="flex">
                   <div className="mx-2">{el.item.charAt(0).toUpperCase()+el.item.slice(1)}</div>
-                  <div className="mx-2"><input type="checkbox" name="check" onChange={(e)=>Clicker(e,el.id)}/></div>
-                  <div><button className="bg-red-600 rounded-md p-2 text-white" onClick={deletestuff}>DELETE</button></div>
+                  <div className="mx-2"><input type="checkbox" name="check" onChange={(e)=>Clicker(e,el.id)} checked={el.completed}/></div>
+                  <div><button className="bg-red-600 rounded-md p-2 text-white" onClick={()=>deletestuff(el.id)}>DELETE</button></div>
                   </div>
                   </li>)})}
           
