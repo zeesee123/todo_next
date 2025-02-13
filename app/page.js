@@ -25,9 +25,14 @@ export default function Home() {
     });
   }
 
-  function deletestuff(e){
+  function deletestuff(id){
 
-    console.log(e);
+  
+
+    list.filter((el)=>{
+
+      
+    })
   }
 
   function additem(e){
@@ -109,7 +114,7 @@ export default function Home() {
                 <div className="flex">
                   <div className="mx-2">{el.item.charAt(0).toUpperCase()+el.item.slice(1)}</div>
                   <div className="mx-2"><input type="checkbox" name="check" onChange={(e)=>Clicker(e,el.id)}/></div>
-                  <div><button className="bg-red-600 rounded-md p-2 text-white" onClick={deletestuff}>DELETE</button></div>
+                  <div><button className="bg-red-600 rounded-md p-2 text-white" onClick={deletestuff(el.id)}>DELETE</button></div>
                   </div>
                   </li>)})}
           
