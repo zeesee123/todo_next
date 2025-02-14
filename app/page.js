@@ -11,6 +11,21 @@ export default function Home() {
   const[item,setitem]=useState("");
   const[list,setlist]=useState(()=>JSON.parse(localStorage.getItem('list'))||[]);
 
+  
+  useEffect(()=>{
+
+    const fek=async()=>{
+
+      console.log(process.env.NEXT_PUBLIC_API_URL);
+      let fe=await fetch(`/api/sample`);
+      let re=await fe.json();
+
+      console.log(re);
+    }
+    
+    fek();
+
+  } ,[]);
   useEffect(()=>{
     localStorage.setItem('list',JSON.stringify(list));
   },[list]);
